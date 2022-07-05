@@ -10,7 +10,12 @@ const jwt = require("jsonwebtoken");
             message: "Please provide usename and password",
          });
       }
-    
+      // checking is the username and password is correct
+      if (req.body.usename !== process.env.JWT_ADMIN || req.body.password !== process.env.JWT_ADMIN_PASSWORD) {
+         return res.status(400).json({
+            message: "Invalid usename or password",
+         });
+      }
       // generating a jwt
       const token = await jwt.sign({username:process.env.JWT_ADMIN}, process.env.JWT_SECRET);
       let user = {

@@ -140,6 +140,8 @@ exports.verifyToken = async (req, res, next) => {
 };
 
 exports.checkLoggedIn = async (req, res) => {
+  console.log(req.cookies);
+
   let message;
   try {
     if (!req.cookies.jwt) {
@@ -194,3 +196,5 @@ exports.logout = async (req, res) => {
     });
   }
 };
+
+
