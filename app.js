@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 const dotenv = require("dotenv").config()
 const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
 const userRouter = require('./routers/userRouter')
 const articleRouter = require('./routers/articleRouter')
 const categoryRouter = require('./routers/catogoryRouter')
@@ -12,8 +13,9 @@ const commentRouter = require('./routers/commentRouter')
 const adminRouter = require('./routers/adminRouter')
 
 // middleware
+app.use(cookieParser())
 app.use(express.json());
-app.use(cors({origin:'http://localhost:5500'}));
+app.use(cors({origin:'http://localhost:3000', credentials:true}));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"))
 app.use('/api/v1/users',userRouter)
