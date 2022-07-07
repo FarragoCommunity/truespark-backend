@@ -158,14 +158,28 @@ exports.findExeptMe = async (req, res) => {
 };
 
 
-// add like to blog
+// add like with user
+
 exports.addLike = async (req, res) => {
   try {
-    const blog = await Article.findByIdAndUpdate(req.params.id, {
+    // add user
+    const blog = await Article.findByIdAndUpdate(
+      req.params.id,
+      {
+        $push: { likes: req.body.userId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    // add like
+    const likes = await Article.findByIdAndUpdate(req.params.id, {
       $inc: { likes: 1 },
     });
     res.status(200).json({
       blog,
+      likes,
       success: true,
     });
   } catch (error) {
@@ -176,14 +190,28 @@ exports.addLike = async (req, res) => {
   }
 }
 
-// add heart to blog
-exports.addHeart = async (req, res) => {
+
+// dislike a blog
+exports.dislike = async (req, res) => {
   try {
-    const blog = await Article.findByIdAndUpdate(req.params.id, {
-      $inc: { hearts: 1 },
+    // add user
+    const blog = await Article.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: { likes: req.body.userId },
+      },
+      {
+        new: true,
+      }
+    );
+
+    // dislike
+    const likes = await Article.findByIdAndUpdate(req.params.id, {
+      $inc: { likes: -1 },
     });
     res.status(200).json({
       blog,
+      likes,
       success: true,
     });
   } catch (error) {
@@ -193,6 +221,9 @@ exports.addHeart = async (req, res) => {
     });
   }
 }
+  
+
+
 // get all comments of blog
 exports.getComments = async (req, res) => {
   try {

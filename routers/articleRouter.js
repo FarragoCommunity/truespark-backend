@@ -18,7 +18,7 @@ router.post("/find-exeption/:categoryId/:blogId", verifyAdminToken,articleContro
 router.get("/:id/comments", articleController.getComments);
 // like a blog
 router.patch("/:id/like",verifyToken, articleController.addLike);
-// heart a blog
-router.patch("/:id/heart", verifyToken,articleController.addHeart);
+// dislike a blog
+router.patch("/:id/dislike",verifyToken, articleController.addDislike);
 
 module.exports = router;
