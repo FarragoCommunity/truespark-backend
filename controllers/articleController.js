@@ -192,7 +192,7 @@ exports.addLike = async (req, res) => {
 
 
 // dislike a blog
-exports.addDislike = async (req, res) => {
+exports.dislike = async (req, res) => {
   try {
     // add user
     const blog = await Article.findByIdAndUpdate(

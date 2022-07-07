@@ -19,6 +19,6 @@ router.get("/:id/comments", articleController.getComments);
 // like a blog
 router.patch("/:id/like",verifyToken, articleController.addLike);
 // dislike a blog
-router.patch("/:id/dislike",verifyToken, articleController.addDislike);
+router.patch("/:id/dislike",verifyToken, articleController.dislike);
 
 module.exports = router;
