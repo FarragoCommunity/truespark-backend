@@ -3,7 +3,7 @@ const Category = require("../models/catogeryModel");
 
 exports.createCategory = async (req, res, next) => {
     // checking is name there or not
-  if (!req.body.name && !req.body.color) {
+  if (!req.body.name || !req.body.color) {
     return res.status(400).json({
       message: "Please provide category name",
     });
