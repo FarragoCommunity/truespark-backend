@@ -25,7 +25,7 @@ exports.createBlog= async (req, res) => {
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
-        error: `Articlewith title ${req.body.title} already exists`,
+        error: `Article with title ${req.body.title} already exists`,
       });
     }
     res.status(400).json({
@@ -63,7 +63,7 @@ exports.getAllBlogs = async (req, res) => {
 exports.getBlogById = async (req, res) => {
   try {
     // find Articleby id
-    const Article= await Blog.findById(req.params.id)
+    const blog = await Article.findById(req.params.id)
       .populate("author", "name image description")
       .populate("category", "name");
     res.status(200).json({
@@ -99,8 +99,8 @@ exports.updateBlogById = async (req, res) => {
 
 exports.deleteBlogById = async (req, res) => {
   try {
-    // delete Articleby id
-    const Article= await Blog.findByIdAndDelete(req.params.id);
+    // delete Article by id
+    const blog= await Article.findByIdAndDelete(req.params.id);
     res.status(200).json({
       blog,
       success: true,
@@ -138,7 +138,7 @@ exports.findExeptMe = async (req, res) => {
       category: ObjectId(req.params.categoryId),
       _id: { $ne: req.params.blogId },
     })
-      .populate("category", "name")
+      .populate("category", "likes")
       .limit(req.query.limit)
       .sort({
         createdAt: -1,
