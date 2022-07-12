@@ -8,6 +8,9 @@ router
   .get(articleController.getAllBlogs)
   .post(verifyAdminToken,articleController.createBlog);
 router
+  .route('/recent')
+  .get(articleController.getRecentBlogs)
+router
   .route("/:id")
   .get(articleController.getBlogById)
   .patch(verifyAdminToken,articleController.updateBlogById)
@@ -17,8 +20,8 @@ router.post("/find-exeption/:categoryId/:blogId", verifyAdminToken,articleContro
 // get all comments of an article
 router.get("/:id/comments", articleController.getComments);
 // like a blog
-router.patch("/:id/like",verifyToken, articleController.addLike);
+router.patch("/:id/like",verifyToken,articleController.addLike);
 // dislike a blog
-router.patch("/:id/dislike",verifyToken, articleController.dislike);
+router.patch("/:id/dislike",verifyToken,articleController.dislike);
 
 module.exports = router;
