@@ -10,11 +10,7 @@ const categorySchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
-    }, 
-    color: {
-      type: String,
-      required: [true, "Color is required"],
-    },
+    }
   },
   {
     timestamps: true,

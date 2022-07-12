@@ -15,7 +15,12 @@ const adminRouter = require('./routers/adminRouter')
 // middleware
 app.use(cookieParser())
 app.use(express.json());
-app.use(cors({origin:'*', credentials:true}));
+// app.use(cors({origin:'*', credentials:true }));
+// using cors middleware to allow cross origin resource sharing and all cookies
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"))
 app.use('/api/v1/users',userRouter)

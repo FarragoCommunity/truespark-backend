@@ -43,7 +43,7 @@ exports.getAllBlogs = async (req, res) => {
     let limit = req.query.limit;
     const blogs = await Article.find(query)
       .sort({ createdAt: -1 })
-      .populate("category", "name")
+      .populate("category", "likes")
       .limit(limit)
       .skip(query.skip);
 
@@ -59,6 +59,29 @@ exports.getAllBlogs = async (req, res) => {
     });
   }
 };
+
+exports.getRecentBlogs =async (req,res) => {
+  try {
+    // find recent blogs
+    let query = req.query;
+    let limit = req.query.limit;
+    const blogs = await Article.find(query)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(query.skip);
+
+    res.status(200).json({
+      results: blogs.length,
+      blogs,
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error,
+      success: false,
+    });
+  }
+}
 
 exports.getBlogById = async (req, res) => {
   try {
@@ -161,12 +184,20 @@ exports.findExeptMe = async (req, res) => {
 // add like with user
 
 exports.addLike = async (req, res) => {
+  console.log(req.body);
+
   try {
     // add user
+    if(!req.body.userId){
+      return res.status(400).json({
+        error: "User id is required",
+        success: false,
+      });
+    }
     const blog = await Article.findByIdAndUpdate(
       req.params.id,
       {
-        $push: { likes: req.body.userId },
+        $push: { likedBy: req.body.userId },
       },
       {
         new: true,
@@ -198,7 +229,7 @@ exports.dislike = async (req, res) => {
     const blog = await Article.findByIdAndUpdate(
       req.params.id,
       {
-        $pull: { likes: req.body.userId },
+        $pull: { likedBy: req.body.userId },
       },
       {
         new: true,
