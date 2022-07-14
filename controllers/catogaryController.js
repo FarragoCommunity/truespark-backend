@@ -3,14 +3,23 @@ const Category = require("../models/catogeryModel");
 
 exports.createCategory = async (req, res, next) => {
     // checking is name there or not
-  if (!req.body.name || !req.body.color) {
+  if (!req.body.name) {
     return res.status(400).json({
       message: "Please provide category name",
     });
   }
+  //  checking there have jwt on localstorage or not
+  if (!req.body.jwt){
+    return res.status(400).json({
+      message: "Please provide jwt",
+    });
+  }
+  
   try {
     // create category
-    const category = await Category.create(req.body);
+    const category = await Category.create({
+      name: req.body.name
+    });
     res.status(201).json({
       category,
       success: true,
@@ -59,9 +68,23 @@ exports.getCategoryById = async (req, res) => {
   }
 };
 exports.updateCategoryById = async (req, res) => {
+  //  checking is name there or not
+  if (!req.body.name) {
+    return res.status(400).json({
+      message: "Please provide category name",
+    });
+  }
+  //  checking there have jwt on localstorage or not
+  if (!req.body.jwt){
+    return res.status(400).json({
+      message: "Please provide jwt",
+    });
+  }
   try {
-    // update category by id
-    const category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+      // update category by id
+    const category = await Category.findByIdAndUpdate(req.params.id,{
+      name: req.body.name
+    }, {
       new: true,
     });
     res.status(200).json({
@@ -75,7 +98,14 @@ exports.updateCategoryById = async (req, res) => {
     });
   }
 };
+
 exports.deleteCategoryById = async (req, res) => {
+  // checking there have jwt on localstorage or not
+  if (!req.body.jwt){
+    return res.status(400).json({
+      message: "Please provide jwt",
+    });
+  }
   try {
     // delete category by id
     const category = await Category.findByIdAndDelete(req.params.id);

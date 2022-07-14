@@ -12,10 +12,10 @@ const categoryRouter = require('./routers/catogoryRouter')
 const commentRouter = require('./routers/commentRouter')
 const adminRouter = require('./routers/adminRouter')
 
+
 // middleware
 app.use(cookieParser())
 app.use(express.json());
-// app.use(cors({origin:'*', credentials:true }));
 // using cors middleware to allow cross origin resource sharing and all cookies
 app.use(cors({
     origin: true,

@@ -44,12 +44,8 @@ exports.signup = async (req, res) => {
     user = await User.create(req.body);
 
     // giving the jwt token
-    const maxAge = 1000 * 60 * 60 * 24 * 7
     const token = await user.generateAuthToken();
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      maxAge: maxAge,
-    });
+
     res.status(201).json({
       user,
       token,
@@ -92,10 +88,6 @@ exports.login = async (req, res) => {
 
     // generating a jwt
     const token = await user.generateAuthToken();
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    });
 
     res.status(200).json({
       user,
@@ -115,7 +107,7 @@ exports.login = async (req, res) => {
 exports.verifyToken = async (req, res, next) => {
   let message;
   try {
-    const token = req.cookies.jwt;
+    const token = req.body.jwt;
     if (!token) {
       return res.status(401).json({
         message: "No token provided",
@@ -128,7 +120,7 @@ exports.verifyToken = async (req, res, next) => {
         message: "Invalid token",
       });
     }
-    req.user = user;
+    // req.user = user;
     next();
   } catch (error) {
     res.status(400).json({
@@ -140,16 +132,15 @@ exports.verifyToken = async (req, res, next) => {
 };
 
 exports.checkLoggedIn = async (req, res) => {
-  console.log(req.cookies);
 
   let message;
   try {
-    if (!req.cookies.jwt) {
+    if (!req.body.jwt) {
       return res.status(401).json({
         message: "No token provided",
       });
     }
-    const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+    const decoded = jwt.verify(req.body.jwt, process.env.JWT_SECRET);
     let user = await User.findById(decoded._id);
     if (!user) {
       return res.status(401).json({
@@ -172,19 +163,18 @@ exports.checkLoggedIn = async (req, res) => {
 exports.logout = async (req, res) => {
   let message;
   try {
-    if (!req.cookies.jwt) {
+    if (!req.body.jwt) {
       return res.status(401).json({
         message: "No token provided",
       });
     }
-    const decoded = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+    const decoded = jwt.verify(req.body.jwt, process.env.JWT_SECRET);
     let user = await User.findById(decoded._id);
     if (!user) {
       return res.status(401).json({
         message: "Invalid token",
       });
     }
-    res.clearCookie("jwt");
     res.status(200).json({
       success: true,
     });

@@ -22,11 +22,6 @@ const jwt = require("jsonwebtoken");
          username: process.env.JWT_ADMIN,
       }
 
-      res.cookie("jwt", token, {
-         httpOnly: true,
-         maxAge: 1000 * 60 * 60 * 24 * 7,
-      });
-    
       res.status(200).json({
          user,
          token,
@@ -45,7 +40,7 @@ const jwt = require("jsonwebtoken");
 exports.verifyAdminToken = async (req, res , next) => {
    let message;
    try {
-      const token = req.cookies.jwt;
+      const token = req.body.jwt;
       if (!token) {
          return res.status(400).json({
             message: "Please provide token",
@@ -61,7 +56,7 @@ exports.verifyAdminToken = async (req, res , next) => {
          decoded,
          success: true,
       });
-      req.user = decoded;
+      // req.user = decoded;
       next();
    } catch (error) {
       res.status(400).json({

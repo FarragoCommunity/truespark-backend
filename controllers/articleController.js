@@ -17,7 +17,13 @@ exports.createBlog= async (req, res) => {
     message = "Please provide image";
   }
   try {
-    const blog = await Article.create(req.body);
+    const blog = await Article.create({
+      title:req.body.title,
+      content:req.body.content,
+      author:req.body.author,
+      image:req.body.image,
+      category:req.body.category
+    });
     res.status(201).json({
       blog,
       success: true,
@@ -42,8 +48,9 @@ exports.getAllBlogs = async (req, res) => {
     let query = req.query;
     let limit = req.query.limit;
     const blogs = await Article.find(query)
-      .sort({ createdAt: -1 })
-      .populate("category", "likes")
+      .sort({ likes : -1 })
+      .sort({createdAt:-1 })
+      .populate("likes")
       .limit(limit)
       .skip(query.skip);
 
@@ -104,7 +111,13 @@ exports.getBlogById = async (req, res) => {
 exports.updateBlogById = async (req, res) => {
   try {
     // update Article by id
-    const blog= await Article.findByIdAndUpdate(req.params.id, req.body, {
+    const blog= await Article.findByIdAndUpdate(req.params.id, {
+      title:req.body.title,
+      content:req.body.content,
+      author:req.body.author,
+      image:req.body.image,
+      category:req.body.category
+    }, {
       new: true,
     });
     res.status(200).json({
@@ -185,7 +198,6 @@ exports.findExeptMe = async (req, res) => {
 
 exports.addLike = async (req, res) => {
   console.log(req.body);
-
   try {
     // add user
     if(!req.body.userId){

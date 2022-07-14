@@ -2,15 +2,25 @@ const Comment = require("../models/commentModel");
 
 // add a comment to an article
 exports.addComment = async (req, res) => {
+    // checking there have jwt in localstorage or not
+    if (!req.body.jwt){
+        return res.status(401).json({
+            message: "Please provide jwt",
+        });
+    }
     let message;
-    console.log(req.body);
+    // checking is comment there or not
     if (!req.body.content) {
         message = "Content is required";
     } else if (!req.body.article) {
         message = "Article is required";
     }
     try {
-        const comment = await Comment.create(req.body);
+        const comment = await Comment.create({
+            content : req.body.content,
+            createdBy : req.body.createdBy,
+            article : req.body.article,
+        });
         res.status(201).json({
         comment,
         success: true,
@@ -44,6 +54,12 @@ exports.addComment = async (req, res) => {
 
     // delete a comment
     exports.deleteComment = async (req, res) => {
+        // checking there have jwt in localstorage or not
+        if (!req.body.jwt){
+            return res.status(401).json({
+                message: "Please provide jwt",
+            });
+        }
         try {
             // find comment by id
             const comment = await Comment.findByIdAndDelete(req.params.id);
