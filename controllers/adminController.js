@@ -52,10 +52,6 @@ exports.verifyAdminToken = async (req, res , next) => {
             message: "Invalid token",
          });
       }
-      res.status(200).json({
-         decoded,
-         success: true,
-      });
       // req.user = decoded;
       next();
    } catch (error) {
