@@ -18,12 +18,12 @@ const jwt = require("jsonwebtoken");
       }
       // generating a jwt
       const token = await jwt.sign({username:process.env.JWT_ADMIN}, process.env.JWT_SECRET);
-      let user = {
+      let admin = {
          username: process.env.JWT_ADMIN,
       }
 
       res.status(200).json({
-         user,
+         admin,
          token,
          success: true,
       });
@@ -54,8 +54,12 @@ exports.checkAdminLoggedIn = async (req, res) => {
             message: "Invalid token",
          });
       }
+      let admin = {
+         username: process.env.JWT_ADMIN,
+      }
       res.status(200).json({
          success: true,
+         admin
       });
    } catch (error) {
       res.status(400).json({
