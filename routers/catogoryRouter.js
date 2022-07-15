@@ -1,14 +1,16 @@
 const router = require("express").Router();
 const categoryController = require("../controllers/catogaryController");
+const {verifyAdminToken} = require("../controllers/adminController");
 
 router
   .route("/")
   .get(categoryController.getAllCategories)
-  .post(categoryController.createCategory);
+  .post(verifyAdminToken,categoryController.createCategory);
 router
   .route("/:id")
   .get(categoryController.getCategoryById)
-  .patch(categoryController.updateCategoryById)
-  .delete(categoryController.deleteCategoryById);
+  .patch(verifyAdminToken,categoryController.updateCategoryById)
+  .delete(verifyAdminToken,categoryController.deleteCategoryById);
 
 module.exports = router;
+  

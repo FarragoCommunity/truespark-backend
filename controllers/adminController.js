@@ -36,6 +36,40 @@ const jwt = require("jsonwebtoken");
     }
      }
 
+// check admin logged in 
+
+exports.checkAdminLoggedIn = async (req, res) => {
+   let message;
+   try {
+      // checking is there have jwt
+      if (!req.body.jwt) {
+         return res.status(400).json({
+            message: "No token provided",
+         });
+      }
+      // checking the jwt
+      const decoded = jwt.verify(req.body.jwt, process.env.JWT_SECRET);
+      if (decoded.username !== process.env.JWT_ADMIN) {
+         return res.status(400).json({
+            message: "Invalid token",
+         });
+      }
+      res.status(200).json({
+         success: true,
+      });
+   } catch (error) {
+      res.status(400).json({
+         error,
+         success: false,
+         message,
+      });
+   }
+}
+      
+
+
+
+
 // verify admin  token
 exports.verifyAdminToken = async (req, res , next) => {
    let message;
