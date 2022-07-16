@@ -89,7 +89,7 @@ exports.adminLogout = async (req, res) => {
       }
       res.status(200).json({
          success: true,
-         message: "Logged out successfully",
+         successMessage: "Logged out successfully",
       });
    } catch (error) {
       res.status(400).json({
