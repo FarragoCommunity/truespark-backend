@@ -10,7 +10,7 @@ router
   .route("/:id")
   .get(categoryController.getCategoryById)
   .patch(verifyAdminToken,categoryController.updateCategoryById)
-  .delete(verifyAdminToken,categoryController.deleteCategoryById);
+  .delete(verifyAdminToken,categoryController.deleteCategoryById); // delete the category
 
 module.exports = router;
   
