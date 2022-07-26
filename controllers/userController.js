@@ -187,4 +187,19 @@ exports.logout = async (req, res) => {
   }
 };
 
+const findUserById = async (req,res) => {
+  try{
+    const user =await users.findById(req.params.id)
+    res.status(200).json({
+      user,
+      success: true,
+    });
+  }catch (error){
+    res.status(400).json({
+      error,
+      success: false,
+    });
+  }
+}
+
 
