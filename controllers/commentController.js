@@ -38,7 +38,9 @@ exports.addComment = async (req, res) => {
     exports.getCommentById = async (req, res) => {
         try {
             // find comment by id
-            const comment = await Comment.findById(req.params.id)
+            const comment = await Comment.find({
+                article:req.params.id
+            })
             .populate("article", "title");
             res.status(200).json({
             comment,
