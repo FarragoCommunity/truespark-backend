@@ -37,7 +37,7 @@ exports.addComment = async (req, res) => {
     // get a comment by id
     exports.getCommentById = async (req, res) => {
         try {
-            // find comment by id
+            // find comment by id of article
             const comment = await Comment.find({
                 article:req.params.id
             })
