@@ -187,7 +187,7 @@ exports.logout = async (req, res) => {
   }
 };
 
-const findUserById = async (req,res) => {
+exports.findUserById = async (req,res) => {
   try{
     const user = await User.findById(req.params.id)
     res.status(200).json({
