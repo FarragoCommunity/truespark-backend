@@ -60,6 +60,39 @@ exports.signup = async (req, res) => {
   }
 };
 
+// this app is only have signin or login with google
+// when signin with google, it will create a new user
+// and give the jwt token
+
+exports.googleLogin = async (req, res) => {
+  try {
+    const {name, email} = req.body;
+
+    // checking is user exist
+    let user = await User.findOne({ email });
+    if (!user) {
+      // adding a new user
+      user = await User.create({name, email , password: process.env.GOOGLE_PASSWORD});
+    }
+
+    // giving the jwt token
+    const token = await user.generateAuthToken();
+
+    res.status(201).json({
+      user,
+      token,
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error,
+      success: false,
+    });
+  }
+};
+
+
+
 exports.login = async (req, res) => {
   let message;
   try {

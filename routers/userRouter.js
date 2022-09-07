@@ -8,5 +8,6 @@ router.post("/signup", userController.signup);
 router.post("/login", userController.login);
 router.post("/checkLoggedIn", userController.checkLoggedIn);
 router.post("/logout", userController.logout);
+router.post("/loginwithgoogle", userController.googleLogin);
 
 module.exports = router;
